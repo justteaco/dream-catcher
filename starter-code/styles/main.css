@@ -1,0 +1,80 @@
+
+
+.body, html, .main{
+  display: flex;
+  flex-direction: column;
+  background: pink ;
+  text-align: center;
+  color: yellow;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  
+}
+/* .play {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+} */
+
+
+.grid {
+  /* align-items: center; */
+  /* box-shadow: 0 0 200px 0 coral; */
+  display: flex;
+  /* flex-grow: 1; */
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: center;
+  width: 462px;
+  height: 462px;
+  background-color: pink;
+}
+
+h1 {
+  font: 300;
+}
+.grid-item {
+  flex-grow: 2;
+  height: 40px;
+  width: 40px;
+  background-color:pink ;
+  border: solid black 1px;
+}
+
+
+.snake {
+  /* height: 50px;
+  width: 50px; */
+  background-color: green;
+  top: 30%;
+  left: 30%;
+}
+
+.food {
+  background-color: palevioletred;
+}
+
+/* .flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  justify-content: center;
+  width: 90%;
+} */
+
+button {
+  font-family: 'Space Mono', monospace;
+  background-color: plum;
+  border: 4px solid peru;
+  cursor: pointer;
+  color: yellow;
+  transition: all 0.2s ease;
+  padding: 8px 15px;
+  outline: none !important;
+}
