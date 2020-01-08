@@ -78,3 +78,8 @@ button {
   padding: 8px 15px;
   outline: none !important;
 }
+
+p {
+  font-size: 30px;
+  color: black;
+}

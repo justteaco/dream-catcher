@@ -1,104 +1,88 @@
 function init() {
-  //  dom variables
+
+  //  DOM VARIABLES
+
   const grid = document.querySelector('.grid')
-  const squares = []
-  // const wall = []
-  //timer, start button , score
+
+  let squares = []
+
+
+
+  // TIMER, START BUTTON, SCORE
+
   const startBtn = document.querySelector('.start')
-  // const timerDisplay = document.querySelector('.timer')
+
   // const scoreDisplay = document.querySelector('.score')
-  
+
   const stopBtn = document.querySelector('.stop')
-  // game variables
+
+
+
+  // GAME VARIABLES
+
   const width = 11
+
   const snake = [2, 1, 0]
+
+  let timerId = null
+
   let direction = null
-  const speed = 200
-  console.log(snake[0])
-  
-  // let timeRemaining = 5
-  
-  let intervalId = null
+
+  let speed = 350
+
   let score = 0
+
   let gameInPlay = false
-  let running = null 
-  let wall = null 
-  let speedy = null 
 
+  let apple = null
 
+  
 
-  // build the grid first! 
+  // FUNCTIONS
 
-  // loop as many times as width times the width to fill the grid
-  function createGrid() {
+  function makeGrid() {
     Array(width * width).join('.').split('.').forEach(() => {
-      // create 
       const square = document.createElement('div')
       square.classList.add('grid-item')
       squares.push(square)
       grid.appendChild(square)
     })
   }
-  
 
-  function startGame() {
-    if (!running) {
-      createGrid()
-      addFood()
-      addSnake()
-      speedy = 400
-
-      intervalId = setInterval(snakeMove, speed)
-      console.log('still running')
-      running = true 
-    } else {
-      running = false 
-    }  
-    
-  }
-  startGame()
-  console.log(squares)
-
-  //add the snake at the start of the game
   function addSnake() {
     snake.map(item => squares[item].classList.add('snake'))
   }
-  addSnake()
 
-  //remove the sname at the end of game 
   function removeSnake() {
     snake.map(item => squares[item].classList.remove('snake'))
   }
 
-  //this adds food to grid 
   function addFood() {
-    const eatApple = Math.floor(Math.random() * squares.length)
-    squares[eatApple].classList.add('food')
+    apple = Math.floor(Math.random() * (width * width))
+    squares[apple].classList.add('food')
+    console.log(`location of apple is ${apple}`)
   }
-  addFood()
 
   function eatFood() {
-    if (squares[snake[0]].classList.contains('food')) {
+    if (snake[0] === apple) {
       console.log('eat food')
-      squares[snake[0]].classList.remove('food')
+      removeFood()
       snake.unshift(snake[0] + 1)
-      clearInterval(intervalId)
-      speedy = speedy - 10
-      intervalId = setInterval(snakeMove, speedy)
       addFood()
-
-      score += 1
+      score++
+      speed -= 30
       console.log(`score is now ${score}`)
+      console.log(`speed is now ${speed}`)
       document.querySelector('.score').innerHTML = score
-      // console.log('my score is going up')
     }
 
   }
-  // places player at the starting position when grid has finished building
 
-  //directions
+  function removeFood() {
+    squares[apple].classList.remove('food')
+  }
+
   function handleKeyDown(e) {
-    // informs direction
     switch (e.keyCode) {
       case 39: if (direction !== 'left') direction = 'right'
         break
@@ -113,99 +97,102 @@ function init() {
         console.log('player shouldnt move')
     }
     console.log(direction)
+    snakeMove()
+  }
 
-   
-  
-    function moveRight() {
+  function snakeMove() {
+    if (direction === 'right' && snake[0] % width < width - 1) {
       removeSnake()
-      // if snake hits a wall
       snake.pop()
-      console.log(snake, 'pre-unshift')
       snake.unshift(snake[0] + 1)
       addSnake()
-      
+    } else if (direction === 'right' && snake[0] % width >= width - 1) {
+      console.log('you died')
+      killGame()
     }
 
-    function moveLeft() {
+    if (direction === 'left' && snake[0] % width > 0) {
       removeSnake()
       snake.pop()
       snake.unshift(snake[0] - 1)
       addSnake()
-        
+    } else if (direction === 'left' && snake[0] % width <= 0) {
+      console.log('you died')
+      killGame()
     }
 
-    function moveUp(){
+    if (direction === 'down' && snake[0] + width < width * width) {
       removeSnake()
-      // if snake hits a wall
-      snake.pop()
-      snake.unshift(snake[0] - width)
-      addSnake()
-        
-    }
-
-    function moveDown() {
-      removeSnake()
-      // if snake hits a wall
       snake.pop()
       snake.unshift(snake[0] + width)
       addSnake()
-        
+    } else if (direction === 'down' && snake[0] + width >= width * width) {
+      console.log('you died')
+      killGame()
     }
-    //wall array 
-    //in order to make it stop add intervals condtions
-    //then add to each function
-    //create wall array 
-    //classlist.wall clear interval 
 
-    let timerId = null
+    if (direction === 'up' && snake[0] - width >= 0) {
+      removeSnake()
+      snake.pop()
+      snake.unshift(snake[0] - width)
+      addSnake()
+    } else if (direction === 'up' && snake[0] - width < 0) {
+      console.log('you died')
+      killGame()
+    }
 
-    // is it the first time the player 'plays'?
+    console.log(`Head of snake is at ${snake[0]}`)
+    console.log(snake)
+    eatFood()
+
+  }
+
+  function killGame() {
+    clearInterval(timerId)
+    removeSnake()
+    removeFood()
+    grid.innerHTML = ''
+    reset()
+  }
+
+  function reset() {
+    squares = []
+    timerId = null
+    direction = null
+    speed = 350
+    score = 0
+    gameInPlay = false
+    apple = null
+  }
+
+  function startGame() {
+    startBtn.innerHTML = 'Resume'
+    startBtn.addEventListener('click', unPause)
     if (!gameInPlay) {
       gameInPlay = true
-      // timerId = setInterval(snakeMove, speed)
-    } else {
-      clearInterval(timerId)
+      timerId = setInterval(snakeMove, speed)
+      makeGrid()
+      addFood()
+      addSnake()
+      addEventListener('keydown', handleKeyDown)
     }
   }
-  
-  function collision() {
-    for (var i = 1; i < squares.length; i++)
-      if (snake[0] === snake[i]) {
-        endGame()
-      }
-  }
-  
 
-  function endGame() {
-    if (!wall) {
-      gameInPlay = false 
-      clearInterval()
-      snake[0,1,2]
-      direction = 'right'
-      score = 0 
-      document.querySelector('.score')
-      alert('game over')
-    }
-
+  function stopGame() {
+    clearInterval(timerId)
   }
-  
-  // event handlers
-  window.addEventListener('keydown', handleKeyDown)
-  // window.addEventListener('keydown', snakeMove)
+
+  function unPause() {
+    timerId = setInterval(snakeMove, speed)
+  }
+
+
+
+  // EVENT HANDLERS
+
+  startBtn.addEventListener('click', startGame)
+  stopBtn.addEventListener('click', stopGame)
+
+
 }
-
 window.addEventListener('DOMContentLoaded', init)
-
-
-// if the player presses a key for the first time 
-// then start the interval
-// and start moving
-// if it's not the first time
-// then clear the previous intervals
-
-
-
-
-
-
-
