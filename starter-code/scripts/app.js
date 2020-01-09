@@ -3,29 +3,34 @@ function init() {
   //  DOM VARIABLES
 
   const grid = document.querySelector('.grid')
-  let squares = []
-
-  // TIMER, START BUTTON, SCORE
 
   const startBtn = document.querySelector('.start')
-  // const scoreDisplay = document.querySelector('.score')
-  const stopBtn = document.querySelector('.stop')
+
+  let squares = []
+
+
 
   // GAME VARIABLES
+
   const width = 11
+
   let snake = [3, 2, 1]
+
   let direction = 'right'
+
   let speed = 600
+
   let score = 0
+
   let gameInPlay = false
+
   let apple = null
+
   let snakeStartVal = 2
+
   let timerId = null
 
-  //variables for hi-score
-  //
-
-  // let move = null 
+  
 
   // FUNCTIONS
 
@@ -40,13 +45,10 @@ function init() {
 
   function addSnake() {
     snake.map(item => squares[item].classList.add('snake'))
-
     console.log(`ADD SNAKE array: ${snake}`)
     snake.unshift()
     snake.splice(snakeStartVal)
-
     console.log(`ADD SNAKE apple eat ct = ${snakeStartVal}`)
-
   }
 
   function removeSnake() {
@@ -64,23 +66,21 @@ function init() {
     }
   }
 
-
   function eatFood() {
     if (snake[0] === apple) {
-      console.log('eat food')
-      removeFood()
-      // snake.splice(applesEatenCount)
-      // snake.unshift(snake[0] + 1)
       snakeStartVal++
-      console.log(`EF apples eaten = ${snakeStartVal}`)
-      addFood()
       score++
       speed -= 30
+      removeFood()
+      addFood()
       clearInterval(timerId)
       timerId = setInterval(snakeMove, speed)
+      document.querySelector('.score').innerHTML = score
+
+      console.log(`EF apples eaten = ${snakeStartVal}`)
+      console.log('eat food')
       console.log(`score is now ${score}`)
       console.log(`speed is now ${speed}`)
-      document.querySelector('.score').innerHTML = score
     }
   }
 
@@ -103,17 +103,13 @@ function init() {
         console.log('player shouldnt move')
     }
     console.log(direction)
-    // snakeMove()
   }
 
   function snakeMove() {
     console.log(`SM apples eaten ct = ${snakeStartVal}`)
     if (direction === 'right' && snake[0] % width < width - 1) {
       removeSnake()
-      // snake.pop()
       snake.unshift(snake[0] + 1)
-      // snake.splice(applesEatenCount)
-      // snake.unshift()
       addSnake()
     } else if (direction === 'right' && snake[0] % width >= width - 1) {
       console.log('you died')
@@ -122,10 +118,7 @@ function init() {
 
     if (direction === 'left' && snake[0] % width > 0) {
       removeSnake()
-      // snake.pop()
       snake.unshift(snake[0] - 1)
-      // snake.splice(applesEatenCount)
-      // snake.unshift()
       addSnake()
     } else if (direction === 'left' && snake[0] % width <= 0) {
       console.log('you died')
@@ -134,10 +127,7 @@ function init() {
 
     if (direction === 'down' && snake[0] + width < width * width) {
       removeSnake()
-      // snake.pop()
       snake.unshift(snake[0] + width)
-      // snake.splice(applesEatenCount)
-      // snake.unshift()
       addSnake()
     } else if (direction === 'down' && snake[0] + width >= width * width) {
       console.log('you died')
@@ -146,10 +136,7 @@ function init() {
 
     if (direction === 'up' && snake[0] - width >= 0) {
       removeSnake()
-      // snake.pop()
       snake.unshift(snake[0] - width)
-      // snake.splice(applesEatenCount)
-      // snake.unshift()
       addSnake()
     } else if (direction === 'up' && snake[0] - width < 0) {
       console.log('you died')
@@ -199,8 +186,8 @@ function init() {
       makeGrid()
       addFood()
       addSnake()
-      console.log(`startGame snake array = ${snake}`)
       addEventListener('keydown', handleKeyDown)
+      console.log(`startGame snake array = ${snake}`)
       console.log(`apples eaten ct = ${snakeStartVal}`)
     }
   }
@@ -210,8 +197,6 @@ function init() {
   // EVENT HANDLERS
 
   startBtn.addEventListener('click', startGame)
-
-
 
 }
 window.addEventListener('DOMContentLoaded', init)
