@@ -3,40 +3,29 @@ function init() {
   //  DOM VARIABLES
 
   const grid = document.querySelector('.grid')
-
   let squares = []
-
-
 
   // TIMER, START BUTTON, SCORE
 
   const startBtn = document.querySelector('.start')
-
   // const scoreDisplay = document.querySelector('.score')
-
   const stopBtn = document.querySelector('.stop')
 
-
-
   // GAME VARIABLES
-
   const width = 11
-
-  const snake = [2, 1, 0]
-
+  let snake = [3, 2, 1]
+  let direction = 'right'
+  let speed = 600
+  let score = 0
+  let gameInPlay = false
+  let apple = null
+  let snakeStartVal = 2
   let timerId = null
 
-  let direction = null
+  //variables for hi-score
+  //
 
-  let speed = 350
-
-  let score = 0
-
-  let gameInPlay = false
-
-  let apple = null
-
-  
+  // let move = null 
 
   // FUNCTIONS
 
@@ -51,31 +40,48 @@ function init() {
 
   function addSnake() {
     snake.map(item => squares[item].classList.add('snake'))
+
+    console.log(`ADD SNAKE array: ${snake}`)
+    snake.unshift()
+    snake.splice(snakeStartVal)
+
+    console.log(`ADD SNAKE apple eat ct = ${snakeStartVal}`)
+
   }
 
   function removeSnake() {
-    snake.map(item => squares[item].classList.remove('snake'))
+    squares.forEach(square => square.classList.remove('snake'))
   }
 
   function addFood() {
     apple = Math.floor(Math.random() * (width * width))
     squares[apple].classList.add('food')
-    console.log(`location of apple is ${apple}`)
+    if (squares[apple].classList.contains('snake')) {
+      console.log('apple on snake')
+      removeFood()
+      addFood()
+      console.log(`location of apple is ${apple}`)
+    }
   }
+
 
   function eatFood() {
     if (snake[0] === apple) {
       console.log('eat food')
       removeFood()
-      snake.unshift(snake[0] + 1)
+      // snake.splice(applesEatenCount)
+      // snake.unshift(snake[0] + 1)
+      snakeStartVal++
+      console.log(`EF apples eaten = ${snakeStartVal}`)
       addFood()
       score++
       speed -= 30
+      clearInterval(timerId)
+      timerId = setInterval(snakeMove, speed)
       console.log(`score is now ${score}`)
       console.log(`speed is now ${speed}`)
       document.querySelector('.score').innerHTML = score
     }
-
   }
 
   function removeFood() {
@@ -97,14 +103,17 @@ function init() {
         console.log('player shouldnt move')
     }
     console.log(direction)
-    snakeMove()
+    // snakeMove()
   }
 
   function snakeMove() {
+    console.log(`SM apples eaten ct = ${snakeStartVal}`)
     if (direction === 'right' && snake[0] % width < width - 1) {
       removeSnake()
-      snake.pop()
+      // snake.pop()
       snake.unshift(snake[0] + 1)
+      // snake.splice(applesEatenCount)
+      // snake.unshift()
       addSnake()
     } else if (direction === 'right' && snake[0] % width >= width - 1) {
       console.log('you died')
@@ -113,8 +122,10 @@ function init() {
 
     if (direction === 'left' && snake[0] % width > 0) {
       removeSnake()
-      snake.pop()
+      // snake.pop()
       snake.unshift(snake[0] - 1)
+      // snake.splice(applesEatenCount)
+      // snake.unshift()
       addSnake()
     } else if (direction === 'left' && snake[0] % width <= 0) {
       console.log('you died')
@@ -123,8 +134,10 @@ function init() {
 
     if (direction === 'down' && snake[0] + width < width * width) {
       removeSnake()
-      snake.pop()
+      // snake.pop()
       snake.unshift(snake[0] + width)
+      // snake.splice(applesEatenCount)
+      // snake.unshift()
       addSnake()
     } else if (direction === 'down' && snake[0] + width >= width * width) {
       console.log('you died')
@@ -133,8 +146,10 @@ function init() {
 
     if (direction === 'up' && snake[0] - width >= 0) {
       removeSnake()
-      snake.pop()
+      // snake.pop()
       snake.unshift(snake[0] - width)
+      // snake.splice(applesEatenCount)
+      // snake.unshift()
       addSnake()
     } else if (direction === 'up' && snake[0] - width < 0) {
       console.log('you died')
@@ -143,47 +158,51 @@ function init() {
 
     console.log(`Head of snake is at ${snake[0]}`)
     console.log(snake)
+
     eatFood()
+    collision()
+    console.log(`movement speed = ${speed}`)
 
   }
 
+  function collision() {
+    for (let i = 1; i < squares.length; i++)
+      if (snake[0] === snake[i]) {
+        killGame()
+      }
+  }
+
   function killGame() {
-    clearInterval(timerId)
+    clearInterval()
     removeSnake()
     removeFood()
     grid.innerHTML = ''
+    alert('you lost')
     reset()
   }
 
   function reset() {
     squares = []
-    timerId = null
-    direction = null
     speed = 350
     score = 0
     gameInPlay = false
     apple = null
+    snake = [2, 1, 0]
+    direction = 'right'
+    clearInterval(timerId)
   }
 
   function startGame() {
-    startBtn.innerHTML = 'Resume'
-    startBtn.addEventListener('click', unPause)
     if (!gameInPlay) {
       gameInPlay = true
       timerId = setInterval(snakeMove, speed)
       makeGrid()
       addFood()
       addSnake()
+      console.log(`startGame snake array = ${snake}`)
       addEventListener('keydown', handleKeyDown)
+      console.log(`apples eaten ct = ${snakeStartVal}`)
     }
-  }
-
-  function stopGame() {
-    clearInterval(timerId)
-  }
-
-  function unPause() {
-    timerId = setInterval(snakeMove, speed)
   }
 
 
@@ -191,7 +210,7 @@ function init() {
   // EVENT HANDLERS
 
   startBtn.addEventListener('click', startGame)
-  stopBtn.addEventListener('click', stopGame)
+
 
 
 }
