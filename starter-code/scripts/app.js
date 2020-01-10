@@ -3,7 +3,7 @@ function init() {
   //  DOM VARIABLES
 
   const grid = document.querySelector('.grid')
-
+  const instructions = document.querySelector('.instructions')
   const startBtn = document.querySelector('.start')
 
   let squares = []
@@ -30,11 +30,14 @@ function init() {
 
   let timerId = null
 
+  const soundBites = document.querySelector('.music')
+
   
 
   // FUNCTIONS
 
   function makeGrid() {
+    instructions.style.display = 'none'
     Array(width * width).join('.').split('.').forEach(() => {
       const square = document.createElement('div')
       square.classList.add('grid-item')
@@ -189,8 +192,15 @@ function init() {
       addEventListener('keydown', handleKeyDown)
       console.log(`startGame snake array = ${snake}`)
       console.log(`apples eaten ct = ${snakeStartVal}`)
+      score = score - score
     }
   }
+
+  function playSnd(){
+    soundBites.play()
+  }
+    
+  
 
 
 

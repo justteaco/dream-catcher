@@ -2,10 +2,9 @@
 
 .body, html, .main{
   display: flex;
-  flex-direction: column;
-  background: pink ;
+  flex-direction: column; 
   text-align: center;
-  color: yellow;
+  color: cor;
   display: flex;
   flex: 1;
   justify-content: center;
@@ -14,13 +13,12 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-
-header {
-
-  }
-
-  
+  background-image: url(../assets/images/dreamming.gif);
+  background-repeat: no-repeat;
+  background-size: cover; 
 }
+
+
 /* .play {
   display: flex;
   flex-wrap: wrap;
@@ -30,7 +28,7 @@ header {
 
 .grid {
   align-items: center; 
-  box-shadow: 0 0 200px 0 coral;
+  box-shadow: 0 0 900px 0 rgb(20, 54, 94);
   display: flex;
   flex-grow: 1; 
   flex-wrap: wrap;
@@ -38,46 +36,48 @@ header {
   justify-content: center;
   width: 462px;
   height: 462px;
-  background-color: pink;
+  background-color: rgb(19, 23, 37);
+  opacity: 0.8;
+  filter: alpha(opacity=50); 
 }
 
 h1 {
-font-family: 'Press Start 2P', cursive;
-font-family: 'Fredericka the Great', cursive;
+  font-family: 'The Girl Next Door', cursive;
 font: bold;
+font-size: 42px;
+  background: -webkit-linear-gradient(rgb(134, 132, 139), rgb(155, 92, 108));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .grid-item {
   flex-grow: 2;
   height: 40px;
   width: 40px;
-  background-color:pink ;
-  border: solid coral 1px;
-  transition-property:
-    box-shadow
-    opacity;
-    transform;
+  background-color: rgb(138, 53, 92);
+  border: solid rgb(30, 30, 53) 1px;
 }
 
 
 .snake {
-  /* height: 50px;
-  width: 50px; */
-  background-color: green;
+  height: 40px;
+  width: 40px; 
+  background-image: url(../assets/images/pink\ cloud.png);
   top: 30%;
   left: 30%;
+  border-radius: 50%;
+  
+
 }
 
 .food {
-  background-color: palevioletred;
+  background-image: url(../assets/images/)
+  background-size: contain;
+  height: 40px;
+  width: 40px;
+  background-repeat: no-repeat;
 }
 
-/* .flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20px;
-  justify-content: center;
-  width: 90%;
-} */
+
 
 button {
   font-family: 'Space Mono', monospace;
@@ -91,6 +91,8 @@ button {
 }
 
 p {
-  font-size: 30px;
-  color: black;
+  font-size: 20px;
+  color: rgb(240, 215, 225);
+  font-style: italic;
+
 }
