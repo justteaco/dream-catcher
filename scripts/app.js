@@ -3,9 +3,15 @@ function init() {
   //  DOM VARIABLES
 
   const grid = document.querySelector('.grid')
+
   const instructions = document.querySelector('.instructions')
+
   const startBtn = document.querySelector('.start')
 
+  const audio = document.querySelector('#audio')
+
+  const scoreDisplay = document.querySelector('.score')
+  
   let squares = []
 
 
@@ -14,7 +20,7 @@ function init() {
 
   const width = 11
 
-  let snake = [3, 2, 1]
+  let snake = [2, 1]
 
   let direction = 'right'
 
@@ -26,11 +32,9 @@ function init() {
 
   let apple = null
 
-  let snakeStartVal = 2
+  let snakeStartVal = 1
 
   let timerId = null
-
-  const soundBites = document.querySelector('.music')
 
   
 
@@ -43,11 +47,13 @@ function init() {
       square.classList.add('grid-item')
       squares.push(square)
       grid.appendChild(square)
+      console.log(squares)
     })
   }
 
   function addSnake() {
     snake.map(item => squares[item].classList.add('snake'))
+    squares[snake[0]].classList.add('head')
     console.log(`ADD SNAKE array: ${snake}`)
     snake.unshift()
     snake.splice(snakeStartVal)
@@ -56,6 +62,7 @@ function init() {
 
   function removeSnake() {
     squares.forEach(square => square.classList.remove('snake'))
+    squares[snake[0]].classList.remove('head')
   }
 
   function addFood() {
@@ -78,8 +85,8 @@ function init() {
       addFood()
       clearInterval(timerId)
       timerId = setInterval(snakeMove, speed)
-      document.querySelector('.score').innerHTML = score
-
+      scoreDisplay.innerHTML = score
+      audio.play()
       console.log(`EF apples eaten = ${snakeStartVal}`)
       console.log('eat food')
       console.log(`score is now ${score}`)
@@ -92,6 +99,7 @@ function init() {
   }
 
   function handleKeyDown(e) {
+    
     switch (e.keyCode) {
       case 39: if (direction !== 'left') direction = 'right'
         break
@@ -103,6 +111,7 @@ function init() {
         break
 
       default:
+        e.preventDefault()
         console.log('player shouldnt move')
     }
     console.log(direction)
@@ -162,29 +171,34 @@ function init() {
       }
   }
 
-  function killGame() {
-    clearInterval()
-    removeSnake()
-    removeFood()
-    grid.innerHTML = ''
-    alert('you lost')
-    reset()
-  }
-
   function reset() {
     squares = []
-    speed = 350
+    speed = 600
     score = 0
     gameInPlay = false
     apple = null
-    snake = [2, 1, 0]
+    snake = [2, 1]
     direction = 'right'
+    snakeStartVal = 1
+    scoreDisplay.innerHTML = ''
     clearInterval(timerId)
+  }
+
+  function killGame() {
+    removeSnake()
+    removeFood()
+    grid.innerHTML = ''
+    alert('still want to manifest?')
+    reset()
+    gameInPlay = false
+    console.log(clearInterval)
+    startGame()
   }
 
   function startGame() {
     if (!gameInPlay) {
       gameInPlay = true
+      speed = 600
       timerId = setInterval(snakeMove, speed)
       makeGrid()
       addFood()
@@ -192,12 +206,8 @@ function init() {
       addEventListener('keydown', handleKeyDown)
       console.log(`startGame snake array = ${snake}`)
       console.log(`apples eaten ct = ${snakeStartVal}`)
-      score = score - score
+      // score = score - score
     }
-  }
-
-  function playSnd(){
-    soundBites.play()
   }
     
   
