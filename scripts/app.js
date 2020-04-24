@@ -11,7 +11,7 @@ function init() {
   const audio = document.querySelector('#audio')
 
   const scoreDisplay = document.querySelector('.score')
-  
+
   let squares = []
 
 
@@ -21,22 +21,15 @@ function init() {
   const width = 11
 
   let snake = [2, 1]
-
   let direction = 'right'
-
   let speed = 600
-
   let score = 0
-
   let gameInPlay = false
-
   let apple = null
-
   let snakeStartVal = 1
-
   let timerId = null
 
-  
+
 
   // FUNCTIONS
 
@@ -99,7 +92,7 @@ function init() {
   }
 
   function handleKeyDown(e) {
-    
+
     switch (e.keyCode) {
       case 39: if (direction !== 'left') direction = 'right'
         break
@@ -209,8 +202,8 @@ function init() {
       // score = score - score
     }
   }
-    
-  
+
+
 
 
 
