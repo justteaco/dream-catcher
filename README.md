@@ -126,6 +126,12 @@ I plan to advance and improve this game by:
 * Making the game mobile responsive.
 
 
+# Key Learnings 
+
+* CSS
+* Using Grids
+
+
 
 
 
